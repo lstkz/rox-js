@@ -1,5 +1,6 @@
 "use strict";
 var wrap = require('./lib/rox').wrap;
+var async = require('async');
 
 function test(a, b, callback) {
     callback(null, a + b);
@@ -47,7 +48,6 @@ sample._rox = {
 var wrappedTest = wrap(test);
 
 
-wrappedTest(1, 2, function () {
-   // console.log(arguments);
-});
-
+//wrappedTest(1, 2, function () {
+//   // console.log(arguments);
+//});
