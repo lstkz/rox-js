@@ -1,0 +1,32 @@
+{
+  "name": "rox",
+  "version": "0.0.0",
+  "description": "Function utils, validation and caching",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lsentkiewicz/rox-js"
+  },
+  "keywords": [
+    "util",
+    "validation",
+    "caching",
+    "rox"
+  ],
+  "author": "Łukasz Sentkiewicz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lsentkiewicz/rox-js/issues"
+  },
+  "homepage": "https://github.com/lsentkiewicz/rox-js",
+  "dependencies": {
+    "underscore": "~1.5.2",
+    "winston": "~0.7.2",
+    "mocha": "~1.17.1",
+    "chai": "~1.9.0",
+    "async": "~0.2.10"
+  }
+}
