@@ -474,6 +474,11 @@ describe('Validation', function () {
             done(error);
         });
 
+        it("should validate, definition = [[]]", function (done) {
+            var error = validator.validate("paramName", [[1], [2, 3, 4]], [[]]);
+            done(error);
+        });
+
         it("should return error if not array, definition = Array", function (done) {
             var error = validator.validate("paramName", 12, Array);
             assert.ok(error);
@@ -502,6 +507,45 @@ describe('Validation', function () {
             ]);
             assert.ok(error);
             assert.equal(error.message, "paramName[2] should be one of the following types: number, string.");
+            done();
+        });
+    });
+
+
+    describe("enum", function () {
+        it("should validate, definition = {'enum': ['DOG', 'CAT']}", function (done) {
+            var error = validator.validate("paramName", 'CAT', {'enum': ['DOG', 'CAT']});
+            done(error);
+        });
+
+        it("should validate, definition = {'enum': ['DOG', 'CAT'], ignoreCase: true}", function (done) {
+            var error = validator.validate("paramName", 'cat', {'enum': ['DOG', 'CAT'], ignoreCase: true});
+            done(error);
+        });
+
+        it("should validate null, definition = {'enum': ['DOG', 'CAT'], required: false}", function (done) {
+            var error = validator.validate("paramName", null, {'enum': ['DOG', 'CAT'], required: false});
+            done(error);
+        });
+
+        it("should return error if not string, definition = {'enum': ['DOG', 'CAT']}", function (done) {
+            var error = validator.validate("paramName", 1, {'enum': ['DOG', 'CAT']});
+            assert.ok(error);
+            assert.equal(error.message, "paramName should be a string.");
+            done();
+        });
+
+        it("should return error if not valid enum, definition = {'enum': ['DOG', 'CAT']}", function (done) {
+            var error = validator.validate("paramName", 'bird', {'enum': ['DOG', 'CAT']});
+            assert.ok(error);
+            assert.equal(error.message, "paramName should be an enum value: DOG, CAT");
+            done();
+        });
+
+        it("should return error if invalid case, definition = {'enum': ['DOG', 'CAT']}", function (done) {
+            var error = validator.validate("paramName", 'dog', {'enum': ['DOG', 'CAT']});
+            assert.ok(error);
+            assert.equal(error.message, "paramName should be a case-sensitive enum value: DOG, CAT");
             done();
         });
     });
