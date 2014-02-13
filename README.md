@@ -100,7 +100,7 @@ You can define alias, if you use some type often.
 ```js
 validator.registerAlias("offset", { type: "Integer", min: 0 });
 validator.registerAlias("limit", { type: "Integer", min: 1  });
-validator.registerAlias("userRole", ["admin", "superadmin", "user", "manager"]);
+validator.registerAlias("userRole", {"enum": ["admin", "superadmin", "user", "manager"]});
 
 function searchUsers(searchCriteria) {
     var definition = {
