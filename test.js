@@ -16,38 +16,37 @@ test._rox = {
         sum: Number
     }
 };
-
-
-function sample(a, b, any, callback) {
-
-}
-
-
-function _O(a) {
-
-}
-
-sample._rox = {
-    signature: "sample",
-    input: {
-        a: { type: Number, max: 100, min: 10 },
-        c: {
-            address: {
-                street: String,
-                nr: { type: "integer", min: 1 }
-            },
-            name: { type: String, required: false, maxLength: 40 },
-            lastName: String
-        },
-        any: "*"
-    },
-    output: {}
-};
-
-
-var wrappedTest = wrap(test);
-
-
-//wrappedTest(1, 2, function () {
-//   // console.log(arguments);
+//
+//
+//
+//var wrappedTest = wrap(test);
+//
+//
+//wrappedTest(1, 'a', function () {
+//   console.log(arguments);
 //});
+
+
+Object.prototype.asd = function () {
+    console.log('x');
+}
+
+function Foo() {
+
+}
+
+Foo.prototype.test = { a: "b"};
+
+var foo = new Foo();
+
+Foo.prototype.test = 'a';
+
+
+for (var prop in Foo.prototype) {
+    console.log(prop);
+}
+
+foo.asd();
+
+//console.log(foo.test);
+

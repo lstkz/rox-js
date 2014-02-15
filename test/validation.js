@@ -87,7 +87,7 @@ describe('Validation', function () {
         it("should return error if not number (string number)", function (done) {
             var error = validator.validate("paramName", "123", "number");
             assert.ok(error);
-            assert.ok(error);
+            assert.equal(error.message, "paramName should be a number.");
             done();
         });
 
@@ -158,7 +158,7 @@ describe('Validation', function () {
         it("should return error if not integer (string number)", function (done) {
             var error = validator.validate("paramName", "123", "integer");
             assert.ok(error);
-            assert.ok(error);
+            assert.equal(error.message, "paramName should be a number.");
             done();
         });
 
@@ -171,8 +171,8 @@ describe('Validation', function () {
 
         it("should return error if not integer (Infinity)", function (done) {
             var error = validator.validate("paramName", Infinity, "integer");
-            assert.equal(error.message, "paramName should be a number. Got Infinity.");
             assert.ok(error);
+            assert.equal(error.message, "paramName should be a number. Got Infinity.");
             done();
         });
 
@@ -511,7 +511,6 @@ describe('Validation', function () {
         });
     });
 
-
     describe("enum", function () {
         it("should validate, definition = {'enum': ['DOG', 'CAT']}", function (done) {
             var error = validator.validate("paramName", 'CAT', {'enum': ['DOG', 'CAT']});
@@ -549,5 +548,215 @@ describe('Validation', function () {
             done();
         });
     });
+
+    describe("register alias", function () {
+        var customValidator;
+
+        beforeEach(function (done) {
+            customValidator = new Validator();
+            var definition = {
+                limit: {type: 'number', min: 0},
+                skip: {type: Number, min: 0},
+                order: {"enum": ["DESC", "ASC"]}
+            };
+            customValidator.registerAlias("SearchCriteria", definition);
+            done();
+        });
+
+        it("should validate, definition = 'SearchCriteria'", function (done) {
+            var obj = {
+                limit: 1,
+                skip: 0,
+                order: "ASC"
+            };
+            var error = customValidator.validate("paramName", obj, "SearchCriteria");
+            done(error);
+        });
+
+        it("should return error if limit is invalid, definition = 'SearchCriteria'", function (done) {
+            var obj = {
+                limit: 'asd',
+                skip: 0,
+                order: "ASC"
+            };
+            var error = customValidator.validate("paramName", obj, 'SearchCriteria');
+            assert.ok(error);
+            assert.equal(error.message, "paramName.limit should be a number.");
+            done();
+        });
+
+        it("should return error if skip is invalid, definition = 'SearchCriteria'", function (done) {
+            var obj = {
+                limit: 1,
+                skip: -1,
+                order: "ASC"
+            };
+            var error = customValidator.validate("paramName", obj, 'SearchCriteria');
+            assert.ok(error);
+            assert.equal(error.message, "paramName.skip should be greater than 0.");
+            done();
+        });
+
+        it("should return error if skip is invalid, definition = 'SearchCriteria'", function (done) {
+            var obj = {
+                limit: 1,
+                skip: 1,
+                order: "xxx"
+            };
+            var error = customValidator.validate("paramName", obj, 'SearchCriteria');
+            assert.ok(error);
+            assert.equal(error.message, "paramName.order should be an enum value: DESC, ASC");
+            done();
+        });
+    });
+
+    describe("register multiple aliases", function () {
+        var customValidator;
+
+        beforeEach(function (done) {
+            customValidator = new Validator();
+            var orderDefinition = {"enum": ["DESC", "ASC"]};
+            var positiveInteger = {type: 'integer', min: 0};
+            var searchCriteriaDefinition = {
+                limit: 'positive-integer',
+                skip: 'positive-integer',
+                order: "order"
+            };
+            customValidator.registerAlias("order", orderDefinition);
+            customValidator.registerAlias("positive-integer", positiveInteger);
+            customValidator.registerAlias("SearchCriteria", searchCriteriaDefinition);
+            done();
+        });
+
+        it("should validate, definition = 'SearchCriteria'", function (done) {
+            var obj = {
+                limit: 1,
+                skip: 0,
+                order: "ASC"
+            };
+            var error = customValidator.validate("paramName", obj, "SearchCriteria");
+            done(error);
+        });
+
+        it("should return error if limit is invalid, definition = 'SearchCriteria'", function (done) {
+            var obj = {
+                limit: 'asd',
+                skip: 0,
+                order: "ASC"
+            };
+            var error = customValidator.validate("paramName", obj, 'SearchCriteria');
+            assert.ok(error);
+            assert.equal(error.message, "paramName.limit should be a number.");
+            done();
+        });
+
+        it("should return error if skip is invalid, definition = 'SearchCriteria'", function (done) {
+            var obj = {
+                limit: 1,
+                skip: -1,
+                order: "ASC"
+            };
+            var error = customValidator.validate("paramName", obj, 'SearchCriteria');
+            assert.ok(error);
+            assert.equal(error.message, "paramName.skip should be greater than 0.");
+            done();
+        });
+
+        it("should return error if skip is invalid, definition = 'SearchCriteria'", function (done) {
+            var obj = {
+                limit: 1,
+                skip: 1,
+                order: "xxx"
+            };
+            var error = customValidator.validate("paramName", obj, 'SearchCriteria');
+            assert.ok(error);
+            assert.equal(error.message, "paramName.order should be an enum value: DESC, ASC");
+            done();
+        });
+    });
+
+
+    describe("register alias with extend", function () {
+        var customValidator;
+
+        beforeEach(function (done) {
+            customValidator = new Validator();
+            var searchCriteriaDefinition = {
+                limit: {type: 'number', min: 0},
+                skip: {type: Number, min: 0},
+                order: {"enum": ["DESC", "ASC"]}
+            };
+            var userSearchCriteria = {
+                name: String
+            };
+            customValidator.registerAlias("SearchCriteria", searchCriteriaDefinition);
+            customValidator.registerAliasWithExtend("SearchCriteria", "UserSearchCriteria", userSearchCriteria);
+            done();
+        });
+
+        it("should validate, definition = 'UserSearchCriteria'", function (done) {
+            var obj = {
+                limit: 1,
+                skip: 0,
+                order: "ASC",
+                name: "a"
+            };
+            var error = customValidator.validate("paramName", obj, "UserSearchCriteria");
+            done(error);
+        });
+
+        it("should return error if limit is invalid, definition = 'UserSearchCriteria'", function (done) {
+            var obj = {
+                limit: 'asd',
+                skip: 0,
+                order: "ASC",
+                name: "a"
+            };
+            var error = customValidator.validate("paramName", obj, 'UserSearchCriteria');
+            assert.ok(error);
+            assert.equal(error.message, "paramName.limit should be a number.");
+            done();
+        });
+
+        it("should return error if skip is invalid, definition = 'UserSearchCriteria'", function (done) {
+            var obj = {
+                limit: 1,
+                skip: -1,
+                order: "ASC",
+                name: "a"
+            };
+            var error = customValidator.validate("paramName", obj, 'UserSearchCriteria');
+            assert.ok(error);
+            assert.equal(error.message, "paramName.skip should be greater than 0.");
+            done();
+        });
+
+        it("should return error if skip is invalid, definition = 'UserSearchCriteria'", function (done) {
+            var obj = {
+                limit: 1,
+                skip: 1,
+                order: "xxx",
+                name: "a"
+            };
+            var error = customValidator.validate("paramName", obj, 'UserSearchCriteria');
+            assert.ok(error);
+            assert.equal(error.message, "paramName.order should be an enum value: DESC, ASC");
+            done();
+        });
+
+        it("should return error if name is invalid, definition = 'UserSearchCriteria'", function (done) {
+            var obj = {
+                limit: 1,
+                skip: 1,
+                order: "ASC",
+                name: 1
+            };
+            var error = customValidator.validate("paramName", obj, 'UserSearchCriteria');
+            assert.ok(error);
+            assert.equal(error.message, "paramName.name should be a string.");
+            done();
+        });
+    });
+
 });
 
