@@ -157,4 +157,70 @@ info: ENTER addNumbers {"input":{"a":1,"b":2}}
 info: EXIT addNumbers {"input":{"a":1,"b":2},"output":{"sum":3},"time":"14ms"}
 ```
 
+Logging method checks also parameter and callback existence.
 
+
+
+Once - ensure that callback is called only once
+-----
+
+```js
+function getUser(userId, callback) {
+    if (userId === 0) {
+        callback(new Error("userId can't be zero"));
+        //missing return here!
+    }
+
+    callback(null, {username: "user1"});
+}
+```
+In above function callback will be called 2 times, because `return` is missing.
+
+method call
+```js
+var wrapped = once(getUser, {signature: "getUser"});
+
+wrapped(0, function () {
+    console.log(arguments);
+});
+
+```
+
+console output
+```
+{ '0': [Error: userId can't be zero] }
+error: callback called more than once in getUser
+```
+
+Extra callback call is ignored. This information is logged only to the console.
+
+Callback timeout - when callback is never called
+-----
+
+```js
+function getUser(userId, callback) {
+    if (userId === 1) {
+        callback(null, {username: "user1"});
+    } else if (userId === 2) {
+        callback(null, {username: "user2"});
+    }
+    //unhandled code
+}
+```
+```getUser``` function returns only results when userId is 1 or 2. Otherwise callback is never called.
+
+method call
+```
+var wrapped = timeout(getUser, {signature: "getUser", timeout: 1000});
+
+wrapped(3, function () {
+    console.log(arguments);
+});
+```
+
+console output
+```
+error: callback never called in getUser
+{ '0': [Error: Callback never called] }
+```
+Error message is logged to the console and error is passed to the callback.
