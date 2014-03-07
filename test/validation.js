@@ -77,6 +77,11 @@ describe('Validation', function () {
             done(error);
         });
 
+        it("should validate string, definition = {type: Number, castString: true}", function (done) {
+            var error = validator.validate("paramName", "123", {type: Number, castString: true});
+            done(error);
+        });
+
         it("should return error if not number (null)", function (done) {
             var error = validator.validate("paramName", null, "number");
             assert.ok(error);
