@@ -67,8 +67,8 @@ describe('Validation', function () {
             done(error);
         });
 
-        it("should validate null, definition = {type: Number, required: false}", function (done) {
-            var error = validator.validate("paramName", null, {type: Number, required: false});
+        it("should validate null, definition = {type: Number, nullable: true}", function (done) {
+            var error = validator.validate("paramName", null, {type: Number, nullable: true});
             done(error);
         });
 
@@ -136,8 +136,8 @@ describe('Validation', function () {
             done(error);
         });
 
-        it("should validate null, definition = {type: 'integer', required: false}", function (done) {
-            var error = validator.validate("paramName", null, {type: 'integer', required: false});
+        it("should validate null, definition = {type: 'integer', nullable: true}", function (done) {
+            var error = validator.validate("paramName", null, {type: 'integer', nullable: true});
             done(error);
         });
 
@@ -223,8 +223,8 @@ describe('Validation', function () {
             done(error);
         });
 
-        it("should validate null, definition = {type: String, required: false}", function (done) {
-            var error = validator.validate("paramName", null, {type: String, required: false});
+        it("should validate null, definition = {type: String, nullable: true}", function (done) {
+            var error = validator.validate("paramName", null, {type: String, nullable: true});
             done(error);
         });
 
@@ -287,8 +287,8 @@ describe('Validation', function () {
             done(error);
         });
 
-        it("should validate null, definition = {type: Boolean, required: false}", function (done) {
-            var error = validator.validate("paramName", null, {type: Boolean, required: false});
+        it("should validate null, definition = {type: Boolean, nullable: true}", function (done) {
+            var error = validator.validate("paramName", null, {type: Boolean, nullable: true});
             done(error);
         });
 
@@ -322,8 +322,8 @@ describe('Validation', function () {
             done(error);
         });
 
-        it("should validate null, definition = {type: Object, required: false}", function (done) {
-            var error = validator.validate("paramName", null, {type: Object, required: false});
+        it("should validate null, definition = {type: Object, nullable: true}", function (done) {
+            var error = validator.validate("paramName", null, {type: Object, nullable: true});
             done(error);
         });
 
@@ -387,7 +387,7 @@ describe('Validation', function () {
                         name: "String",
                         nickname: {
                             type: "String",
-                            required: false
+                            nullable: true
                         }
                     }
                 }
@@ -454,8 +454,8 @@ describe('Validation', function () {
             done(error);
         });
 
-        it("should validate null, definition = {type: 'array', required: false}", function (done) {
-            var error = validator.validate("paramName", null, {type: 'array', required: false});
+        it("should validate null, definition = {type: 'array', nullable: true}", function (done) {
+            var error = validator.validate("paramName", null, {type: 'array', nullable: true});
             done(error);
         });
 
@@ -527,8 +527,8 @@ describe('Validation', function () {
             done(error);
         });
 
-        it("should validate null, definition = {'enum': ['DOG', 'CAT'], required: false}", function (done) {
-            var error = validator.validate("paramName", null, {'enum': ['DOG', 'CAT'], required: false});
+        it("should validate null, definition = {'enum': ['DOG', 'CAT'], nullable: true}", function (done) {
+            var error = validator.validate("paramName", null, {'enum': ['DOG', 'CAT'], nullable: true});
             done(error);
         });
 
