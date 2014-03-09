@@ -113,14 +113,14 @@ describe('Validation', function () {
         it("should return error if greater than max", function (done) {
             var error = validator.validate("paramName", 100, {type: 'number', max: 10});
             assert.ok(error);
-            assert.equal(error.message, "paramName should be less than 10.");
+            assert.equal(error.message, "paramName should be less or equal to 10.");
             done();
         });
 
         it("should return error if less than min", function (done) {
             var error = validator.validate("paramName", 100, {type: 'number', min: 1000});
             assert.ok(error);
-            assert.equal(error.message, "paramName should be greater than 1000.");
+            assert.equal(error.message, "paramName should be greater or equal to 1000.");
             done();
         });
     });
@@ -184,14 +184,14 @@ describe('Validation', function () {
         it("should return error if greater than max", function (done) {
             var error = validator.validate("paramName", 100, {type: 'integer', max: 10});
             assert.ok(error);
-            assert.equal(error.message, "paramName should be less than 10.");
+            assert.equal(error.message, "paramName should be less or equal to 10.");
             done();
         });
 
         it("should return error if less than min", function (done) {
             var error = validator.validate("paramName", 100, {type: 'integer', min: 1000});
             assert.ok(error);
-            assert.equal(error.message, "paramName should be greater than 1000.");
+            assert.equal(error.message, "paramName should be greater or equal to 1000.");
             done();
         });
     });
@@ -598,7 +598,7 @@ describe('Validation', function () {
             };
             var error = customValidator.validate("paramName", obj, 'SearchCriteria');
             assert.ok(error);
-            assert.equal(error.message, "paramName.skip should be greater than 0.");
+            assert.equal(error.message, "paramName.skip should be greater or equal to 0.");
             done();
         });
 
@@ -663,7 +663,7 @@ describe('Validation', function () {
             };
             var error = customValidator.validate("paramName", obj, 'SearchCriteria');
             assert.ok(error);
-            assert.equal(error.message, "paramName.skip should be greater than 0.");
+            assert.equal(error.message, "paramName.skip should be greater or equal to 0.");
             done();
         });
 
@@ -732,7 +732,7 @@ describe('Validation', function () {
             };
             var error = customValidator.validate("paramName", obj, 'UserSearchCriteria');
             assert.ok(error);
-            assert.equal(error.message, "paramName.skip should be greater than 0.");
+            assert.equal(error.message, "paramName.skip should be greater or equal to 0.");
             done();
         });
 
