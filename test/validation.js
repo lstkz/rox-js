@@ -449,6 +449,11 @@ describe('Validation', function () {
             done(error);
         });
 
+        it("should validate, definition = {type: [Number]}", function (done) {
+            var error = validator.validate("paramName", [1], {type: [Number]});
+            done(error);
+        });
+
         it("should validate, definition = {type: 'array'}", function (done) {
             var error = validator.validate("paramName", [1], {type: 'array'});
             done(error);
@@ -456,6 +461,11 @@ describe('Validation', function () {
 
         it("should validate null, definition = {type: 'array', nullable: true}", function (done) {
             var error = validator.validate("paramName", null, {type: 'array', nullable: true});
+            done(error);
+        });
+
+        it("should validate, definition = {type: [Number], nullable: true}", function (done) {
+            var error = validator.validate("paramName", null, {type: [Number], nullable: true});
             done(error);
         });
 
