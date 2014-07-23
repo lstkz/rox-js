@@ -1,6 +1,6 @@
 {
   "name": "rox",
-  "version": "0.0.1-12",
+  "version": "0.0.1-13",
   "description": "Function utils, validation and caching",
   "main": "index.js",
   "scripts": {
